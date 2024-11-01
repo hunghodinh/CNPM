@@ -1,0 +1,123 @@
+﻿@using CNPM.Models;
+@model List<TbNhanVien>
+
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<div class="mt-5">
+						<h4 class="card-title float-left mt-2">Tất Cả Nhân Viên</h4> <a href="/NhanVien/Create" class="btn btn-primary float-right veiwbutton">Thêm Nhân Viên</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<form method="get" asp-action="Index">
+					<div class="row formtype">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Tên Nhân Viên</label>
+								<input class="form-control" type="text" name="TenNhanVien" value="@ViewData["TenNhanVien"]">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Chức vụ</label>
+								<select class="form-control" id="ChucVu" name="ChucVu">
+									<option value="">Chọn chức vụ</option>
+									<option value="Quản Lý" selected="@(ViewData["ChucVu"]?.ToString() == "Quản Lý")">Quản Lý</option>
+									<option value="Nhân Viên" selected="@(ViewData["ChucVu"]?.ToString() == "Nhân Viên")">Nhân Viên</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Tìm Kiếm</label>
+								<button type="submit" class="btn btn-success btn-block mt-0 search_button">Search</button>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card card-table">
+					<div class="card-body booking_card">
+						<div class="table-responsive">
+							<table class="datatable table table-stripped table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>STT</th>
+										<th>Mã số nhân viên</th>
+										<th>Tên nhân viên</th>
+										<th>Số điện thoại</th>
+										<th>Email</th>
+										<th>Căn cước công dân</th>
+										<th>Ngày sinh</th>
+										<th>Giới tính</th>
+										<th>Chức vụ</th>
+										<th class="text-right">Thao tác</th>
+									</tr>
+								</thead>
+								<tbody>
+									@{
+										int stt = 1; 
+									}
+									@foreach (var nv in Model)
+									{
+										<tr>
+											<td>@stt</td>
+											<td>@nv.MaNhanVien</td>
+											<td>@nv.TenNhanVien</td>
+											<td>@nv.SoDt</td>
+											<td>@nv.Email</td>
+											<td>@nv.Cccd</td>
+											<td>@((nv.NgaySinh != null) ? ((DateTime)nv.NgaySinh).ToString("dd/MM/yyyy") : "")</td>
+											<td>@(nv.GioiTinh == true ? "Nam" : "Nữ")</td>
+											<td>@nv.ChucVu</td>
+											<td class="text-right">
+												<a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@nv.MaNhanVien">
+													<i class="fas fa-pencil-alt m-r-5"></i> Sửa
+												</a>
+												<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal-@nv.MaNhanVien">
+													<i class="fas fa-trash-alt m-r-5"></i> Xóa
+												</a>
+											</td>
+
+
+										</tr>
+
+										stt++;
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@foreach (var kh in Model)
+	{
+		<div class="modal fade delete-modal" id="deleteModal-@kh.MaNhanVien" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<img src="~/assets/img/sent.png" alt="" width="50" height="46">
+						<h3 class="delete_class">Bạn chắc chắn muốn xóa nhân viên tên "@kh.TenNhanVien" không?</h3>
+						<div class="m-t-20 d-flex justify-content-between">
+							<a href="#" class="btn btn-white me-1" data-dismiss="modal">Close</a> <!-- Sử dụng me-1 -->
+							<form asp-action="Delete" asp-route-id="@kh.MaNhanVien" class="mb-0">
+								<button type="submit" class="btn btn-danger">Xóa</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>

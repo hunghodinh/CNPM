@@ -1,0 +1,6 @@
+﻿
+
+.col-lg-3 {
+    flex: 0 0 23%; /* Mỗi mục chiếm khoảng 23% độ rộng của hàng */
+    margin-bottom: 20px; /* Khoảng cách giữa các mục */
+}

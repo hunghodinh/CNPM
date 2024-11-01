@@ -1,0 +1,58 @@
+﻿@using CNPM.Models;
+@model List<TbPhong>
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="mt-5">
+                        <h4 class="card-title float-left mt-2">Phòng kí túc</h4>
+                        <a href="/Phong/Create" class="btn btn-primary float-right veiwbutton">
+                            Add Phòng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="pricing py-5">
+                    <div class="container">
+                        <div class="row  mt-5">
+                            @foreach (var ph in Model)
+                            {
+                                <div class="col-lg-3">
+                                    <div class="card mb-5 mb-lg-0">
+                                        <div class="card-body">
+
+                                            <h5 class="card-title text-muted text-uppercase text-center">PHÒNG @ph.MaSoPhong</h5>
+
+                                            <hr>
+                                            <ul class="fa-ul">
+                                                <li>
+                                                    <span class="fa-li"><i class="fas fa-check"></i></span><td>@(ph.TrangThai == true ? "Phòng đầy" : "Phòng còn trống")</td>
+                                                </li>
+                                                <li>
+                                                    <span class="fa-li"><i class="fas fa-check"></i></span>Số lượng tối đa @ph.SoNguoiMax
+                                                </li>
+                                                <li>
+                                                    <span class="fa-li"><i class="fas fa-check"></i></span>Loại phòng @ph.LoaiPhong
+                                                </li>
+                                                <li>
+                                                    <span class="fa-li"><i class="fas fa-check"></i></span>@ph.DonGia VND
+                                                </li>
+                                            </ul>
+                                            <a href="edit-pricing.html" class="btn btn-block btn-primary text-uppercase">Edit</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

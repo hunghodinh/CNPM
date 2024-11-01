@@ -1,0 +1,91 @@
+﻿@using CNPM;
+@model CNPM.Models.TbSinhVien;
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title mt-5">Add Sinh Viên</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<form asp-action ="Edit" method="post">
+					<input type="hidden" asp-for="MaSinhVien" />
+					<div class="row formtype">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="MaSinhVien">Tên sinh viên</label>
+								<input type="text" class="form-control mb-3" asp-for="MaSinhVien" placeholder="SV_ _ _ _">
+								<span asp-validation-for="MaSinhVien" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="TenSinhVien">Tên sinh viên</label>
+								<input type="text" class="form-control mb-3" asp-for="TenSinhVien" placeholder="">
+								<span asp-validation-for="TenSinhVien" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="Cccd">Số căn cước công dân</label>
+								<input type="text" class="form-control mb-3" asp-for="Cccd" placeholder="">
+								<span asp-validation-for="Cccd" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="SoDt">Số điện thoại</label>
+								<input type="text" class="form-control mb-3" asp-for="SoDt" placeholder="">
+								<span asp-validation-for="SoDt" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="Email">Email sinh viên</label>
+								<input type="text" class="form-control mb-3" asp-for="Email" placeholder="">
+								<span asp-validation-for="Email" class="alert-danger"></span>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="NgaySinh">Ngày sinh</label>
+								<div class="cal-icon">
+									<input type="datetime" class="form-control datetimepicker" asp-for="NgaySinh">
+								</div>
+								<span asp-validation-for="NgaySinh" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="DiaChi">Địa chỉ</label>
+								<input type="text" class="form-control mb-3" asp-for="DiaChi" placeholder="">
+								<span asp-validation-for="DiaChi" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="GioiTinh">Giới tính</label>
+								<select class="form-control" asp-for="GioiTinh">
+									<option value="true">Nam</option>
+									<option value="false">Nữ</option>
+								</select>
+								<span asp-validation-for="GioiTinh" class="alert-danger"></span>
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary buttonedit">Lưu</button>
+					<a asp-controller="SinhVien" asp-action="Index" class="btn btn-lg btn-warning p-2">Quay lại</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
