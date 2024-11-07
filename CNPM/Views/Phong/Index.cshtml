@@ -26,9 +26,11 @@
                                     <div class="card mb-5 mb-lg-0">
                                         <div class="card-body">
 
-                                            <h5 class="card-title text-muted text-uppercase text-center">PHÒNG @ph.MaSoPhong</h5>
-
-                                            <hr>
+                                            <a class="card-title text-muted text-uppercase text-center" href="@Url.Action("ChiTiet", "Phong", new { MaSoPhong = ph.MaSoPhong })" class="text-dark">
+                                                PHÒNG @ph.MaSoPhong
+                                            </a>
+                                           
+                                            
                                             <ul class="fa-ul">
                                                 <li>
                                                     <span class="fa-li"><i class="fas fa-check"></i></span><td>@(ph.TrangThai == true ? "Phòng đầy" : "Phòng còn trống")</td>
@@ -43,7 +45,17 @@
                                                     <span class="fa-li"><i class="fas fa-check"></i></span>@ph.DonGia VND
                                                 </li>
                                             </ul>
-                                            <a href="edit-pricing.html" class="btn btn-block btn-primary text-uppercase">Edit</a>
+                                            <tr class="text-right">
+                                                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@ph.MaSoPhong">
+                                                    <i class="fas fa-pencil-alt m-r-5"></i> Sửa
+                                                </a>
+                                                <a class="btn btn-sm btn-danger text-white" style="background-color: red;" data-toggle="modal" data-target="#deleteModal-@ph.MaSoPhong">
+                                                    <i class="fas fa-trash-alt m-r-5"></i> Xóa
+                                                </a>
+                                            </tr>
+
+                                            
+                                            
 
                                         </div>
                                     </div>

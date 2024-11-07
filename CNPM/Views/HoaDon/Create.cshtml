@@ -1,0 +1,101 @@
+﻿@using CNPM;
+@model CNPM.Models.TbHoaDon;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title mt-5">Thêm mới hóa đơn</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<form method="post">
+					<div class="row formtype">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="IdHoaDon">Id hóa đơn</label>
+								<input type="text" class="form-control mb-3" asp-for="IdHoaDon" placeholder="HD _ _">
+								<span asp-validation-for="IdHoaDon" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="IdHopDong">Sinh viên</label>
+								<select asp-for="IdHopDong" class="form-control" asp-items="ViewBag.SinhVienList">
+									<option value="">-- Chọn Sinh Viên --</option>
+									@foreach (var sinhVien in ViewBag.SinhViens)
+									{
+										<option value="@sinhVien.IdHopDong">@sinhVien.TenSinhVien</option>
+									}
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="IdDichVu">Tên dịch vụ</label>
+								<select class="form-control" asp-for="IdDichVu">
+									<option value="DV01">Không sử dụng</option>
+									<option value="DV02">Rác thải</option>
+									<option value="DV03">Gửi xe</option>
+								</select>
+								<span asp-validation-for="IdDichVu" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="NgayDong">Ngày đóng</label>
+								<div class="cal-icon">
+									<input type="datetime" class="form-control datetimepicker" asp-for="NgayDong">
+								</div>
+								<span asp-validation-for="NgayDong" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="TienPhong">Giá phòng/ tháng</label>
+								<input type="text" class="form-control mb-3" asp-for="TienPhong" placeholder="">
+								<span asp-validation-for="TienPhong" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="NguoiDong">Người đóng tiền</label>
+								<input type="text" class="form-control mb-3" asp-for="NguoiDong" placeholder="">
+								<span asp-validation-for="NguoiDong" class="alert-danger"></span>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="TrangThai">Trạng thái</label>
+								<select class="form-control" asp-for="TrangThai">
+									<option value="1">Đã đóng</option>
+									<option value="2">Chưa đóng</option>
+									<option value="3">Còn nợ</option>
+								</select>
+								<span asp-validation-for="TrangThai" class="alert-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="GhiChu">Ghi chú</label>
+								<input type="text" class="form-control mb-3" asp-for="GhiChu" placeholder="">
+								<span asp-validation-for="GhiChu" class="alert-danger"></span>
+							</div>
+						</div>
+
+					</div>
+					<button type="submit" class="btn btn-primary buttonedit">Lưu</button>
+					<a asp-controller="HoaDon" asp-action="Index" class="btn btn-lg btn-warning p-2">Quay lại</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
