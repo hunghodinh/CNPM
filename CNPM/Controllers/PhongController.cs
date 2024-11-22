@@ -87,6 +87,40 @@ namespace CNPM.Controllers
             }
             return View(po);
         }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var mn = _context.TbPhongs.Find(id);
+            if (mn == null)
+            {
+                return NotFound();
+            }
+            return View(mn);
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var nv = _context.TbPhongs.Find(id);
+            if (nv == null)
+            {
+                return NotFound();
+            }
+            // Tìm tất cả các bản ghi 
+            var tk = _context.TbPhongs.Where(p => p.MaSoPhong == id).ToList();
+            if (tk.Any())
+            {
+                _context.TbPhongs.RemoveRange(tk);
+            }
+
+            _context.TbPhongs.Remove(nv);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 		
 }
