@@ -21,19 +21,24 @@ namespace CNPM.Controllers
 
         public IActionResult Create()
         {
-			// Lấy danh sách sinh viên và hợp đồng chưa có trong bảng TbHoaDon
-			var sinhViens = _context.TbHopDongs
-									.Where(h => !_context.TbHoaDons.Any(hd => hd.IdHopDong == h.IdHopDong))
-									.Select(h => new {
-										MaSinhVien = h.MaSinhVien,
-										TenSinhVien = h.MaSinhVien1.TenSinhVien,
-										IdHopDong = h.IdHopDong
-									})
-									.ToList();
+            // Lấy danh sách sinh viên và hợp đồng chưa có trong bảng TbHoaDon
+            var sinhViens = _context.TbHopDongs
+                                    .Where(h => !_context.TbHoaDons.Any(hd => hd.IdHopDong == h.IdHopDong))
+                                    .Join(_context.TbSinhViens,
+                                          h => h.MaSinhVien,
+                                          s => s.MaSinhVien,
+                                          (h, s) => new
+                                          {
+                                              MaSinhVien = s.MaSinhVien,
+                                              TenSinhVien = s.TenSinhVien,
+                                              IdHopDong = h.IdHopDong
+                                          })
+                                    .ToList();
 
-			ViewBag.SinhViens = sinhViens;
-			return View();
+            ViewBag.SinhViens = sinhViens;
+            return View();
         }
+
         [HttpPost]
 		public IActionResult Create(string idHoaDon, string idHopDong, string idDichVu, DateTime? ngayDong, string? nguoiDong, decimal? tienPhong, int? trangThai, string? ghiChu)
 		{

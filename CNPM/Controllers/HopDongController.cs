@@ -16,13 +16,13 @@ namespace CNPM.Controllers
 		public IActionResult Index()
 		{
 			var hopDongVMs = _context.TbHopDongs
-				.Include(hd => hd.MaSinhVien1)
+				.Include(hd => hd.MaSinhVienNavigation)
 				.Include(hd => hd.MaSinhVienNavigation)
 				.Select(hd => new HopDongViewModel
 				{
 					IdHopDong = hd.IdHopDong,
 					MaSoPhong = hd.MaSoPhong,
-					TenSinhVien = hd.MaSinhVien1.TenSinhVien,
+					TenSinhVien = hd.MaSinhVienNavigation.TenSinhVien,
 					
 					MaNhanVien = hd.MaNhanVien,
 					NgayBatDau = hd.NgayBatDau,

@@ -21,8 +21,8 @@ namespace CNPM.Controllers
         {
             var danhSachSinhVien = await _context.TbHopDongs
                 .Where(hd => hd.MaSoPhong == maSoPhong && hd.TrangThai == true) // Kiểm tra trạng thái hợp đồng còn hiệu lực
-                .Include(hd => hd.MaSinhVien1)  // Bao gồm thông tin sinh viên
-                .Select(hd => hd.MaSinhVien1)   // Chọn đối tượng sinh viên
+                .Include(hd => hd.MaSinhVienNavigation)  // Bao gồm thông tin sinh viên
+                .Select(hd => hd.MaSinhVienNavigation)   // Chọn đối tượng sinh viên
                 .ToListAsync();
 
             return View(danhSachSinhVien);

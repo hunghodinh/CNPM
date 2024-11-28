@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CNPM.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNPM.Models;
@@ -29,7 +30,9 @@ public partial class CnpmContext : DbContext
 
     public virtual DbSet<TbTaiKhoan> TbTaiKhoans { get; set; }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public virtual DbSet<TbThongBao> TbThongBaos { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("data source= LAPTOP-V7VL83QP; initial catalog=CNPM; integrated security=True; TrustServerCertificate=True;");
 
@@ -86,12 +89,12 @@ public partial class CnpmContext : DbContext
             entity.Property(e => e.NgayKetThuc).HasColumnType("datetime");
             entity.Property(e => e.TienCoc).HasColumnType("money");
 
-            entity.HasOne(d => d.MaSinhVienNavigation).WithMany(p => p.TbHopDongs)
-                .HasForeignKey(d => d.MaSinhVien)
+            entity.HasOne(d => d.MaNhanVienNavigation).WithMany(p => p.TbHopDongs)
+                .HasForeignKey(d => d.MaNhanVien)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TbHopDong_TbNhanVien");
 
-            entity.HasOne(d => d.MaSinhVien1).WithMany(p => p.TbHopDongs)
+            entity.HasOne(d => d.MaSinhVienNavigation).WithMany(p => p.TbHopDongs)
                 .HasForeignKey(d => d.MaSinhVien)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TbHopDong_TbSinhVien");
@@ -112,6 +115,7 @@ public partial class CnpmContext : DbContext
             entity.Property(e => e.Cccd)
                 .HasMaxLength(50)
                 .HasColumnName("CCCD");
+            entity.Property(e => e.ChucVu).HasMaxLength(50);
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.NgaySinh).HasColumnType("datetime");
             entity.Property(e => e.SoDt)
@@ -142,7 +146,6 @@ public partial class CnpmContext : DbContext
             entity.Property(e => e.Cccd)
                 .HasMaxLength(50)
                 .HasColumnName("CCCD");
-            entity.Property(e => e.DiaChi).HasColumnType("text");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.NgaySinh).HasColumnType("datetime");
             entity.Property(e => e.SoDt)
@@ -167,6 +170,20 @@ public partial class CnpmContext : DbContext
                 .HasForeignKey(d => d.MaNhanVien)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TbTaiKhoan_TbNhanVien");
+        });
+
+        modelBuilder.Entity<TbThongBao>(entity =>
+        {
+            entity.HasKey(e => e.IdThongBao).HasName("PK_Table_1");
+
+            entity.ToTable("TbThongBao");
+
+            entity.Property(e => e.MaSinhVien).HasMaxLength(50);
+            entity.Property(e => e.NgayTao).HasColumnType("datetime");
+
+            entity.HasOne(d => d.MaSinhVienNavigation).WithMany(p => p.TbThongBaos)
+                .HasForeignKey(d => d.MaSinhVien)
+                .HasConstraintName("FK_TbThongBao_TbSinhVien");
         });
 
         OnModelCreatingPartial(modelBuilder);

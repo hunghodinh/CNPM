@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNPM.Models;
+using System;
 using System.Collections.Generic;
 
 namespace CNPM.Models;
@@ -11,7 +12,7 @@ public partial class TbHopDong
 
     public string MaSinhVien { get; set; } = null!;
 
-	public string MaNhanVien { get; set; } = null!;
+    public string MaNhanVien { get; set; } = null!;
 
     public DateTime? NgayBatDau { get; set; }
 
@@ -23,9 +24,9 @@ public partial class TbHopDong
 
     public string? GhiChu { get; set; }
 
-    public virtual TbSinhVien MaSinhVien1 { get; set; } = null!;
+    public virtual TbNhanVien MaNhanVienNavigation { get; set; } = null!;
 
-    public virtual TbNhanVien MaSinhVienNavigation { get; set; } = null!;
+    public virtual TbSinhVien MaSinhVienNavigation { get; set; } = null!;
 
     public virtual TbPhong MaSoPhongNavigation { get; set; } = null!;
 

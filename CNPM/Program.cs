@@ -2,6 +2,9 @@ using CNPM.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+builder.Services.AddSingleton<EmailService>();
+
 
 builder.Services.AddDbContext<CnpmContext>(options =>
 {

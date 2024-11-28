@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CNPM.Models.TbThongBao>
+
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<div class="mt-5">
+						<h4 class="card-title float-left mt-2">Danh sách đã thông báo</h4> <a href="/ThongBao/Create" class="btn btn-primary float-right veiwbutton">Thông báo mới</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card card-table">
+					<div class="card-body booking_card">
+						<div class="table-responsive">
+							<table class="datatable table table-stripped table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>STT</th>
+										<th>Mã sinh viên</th>
+										<th>Tên sinh viên</th>
+										<th>Email sinh viên</th>
+										<th>Nội dung thông báo</th>
+										<th>Thời gian thông báo</th>
+									</tr>
+								</thead>
+								<tbody>
+									@{
+										int stt = 1;
+									}
+									@foreach (var item in Model)
+									{
+										<tr>
+											<td>@stt</td>
+											<td>@item.MaSinhVien</td>
+											<td>@item.MaSinhVienNavigation?.TenSinhVien</td>
+											<td>@item.MaSinhVienNavigation?.Email</td>
+											<td>@item.NoiDung</td>
+											<td>@item.NgayTao?.ToString("yyyy/MM/dd HH:mm")</td>
+										</tr>
+										stt++;
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--
+
+---->

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNPM.Models;
+using System;
 using System.Collections.Generic;
 
 namespace CNPM.Models;
@@ -22,4 +23,6 @@ public partial class TbSinhVien
     public bool? GioiTinh { get; set; }
 
     public virtual ICollection<TbHopDong> TbHopDongs { get; set; } = new List<TbHopDong>();
+
+    public virtual ICollection<TbThongBao> TbThongBaos { get; set; } = new List<TbThongBao>();
 }
