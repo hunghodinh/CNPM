@@ -25,6 +25,7 @@
 										<th>Email sinh viên</th>
 										<th>Nội dung thông báo</th>
 										<th>Thời gian thông báo</th>
+										<th>Hành động</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -40,6 +41,11 @@
 											<td>@item.MaSinhVienNavigation?.Email</td>
 											<td>@item.NoiDung</td>
 											<td>@item.NgayTao?.ToString("yyyy/MM/dd HH:mm")</td>
+											<td class="text-right">
+												<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal-@item.IdThongBao">
+													<i class="fas fa-trash-alt m-r-5"></i> Xóa
+												</a>
+											</td>
 										</tr>
 										stt++;
 									}
@@ -51,6 +57,25 @@
 			</div>
 		</div>
 	</div>
+	@foreach (var kh in Model)
+	{
+		<div class="modal fade delete-modal" id="deleteModal-@kh.IdThongBao" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<img src="~/assets/img/sent.png" alt="" width="50" height="46">
+						<h3 class="delete_class">Bạn chắc chắn muốn xóa không?</h3>
+						<div class="m-t-20 d-flex justify-content-between">
+							<a href="#" class="btn btn-white me-1" data-dismiss="modal">Close</a> <!-- Sử dụng me-1 -->
+							<form asp-action="Delete" asp-route-id="@kh.IdThongBao" class="mb-0">
+								<button type="submit" class="btn btn-danger">Xóa</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
 </div>
 <!--
 

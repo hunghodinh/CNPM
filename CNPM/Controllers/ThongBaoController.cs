@@ -90,5 +90,38 @@ public class ThongBaoController : Controller
         // Nếu model không hợp lệ hoặc có lỗi, quay lại View Create
         return View(thongBao);
     }
+    public IActionResult Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        var mn = _context.TbThongBaos.Find(id);
+        if (mn == null)
+        {
+            return NotFound();
+        }
+        return View(mn);
+    }
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteConfirmed(int id)
+    {
+        var nv = _context.TbThongBaos.Find(id);
+        if (nv == null)
+        {
+            return NotFound();
+        }
+        // Tìm tất cả các bản ghi 
+        var tk = _context.TbThongBaos.Where(p => p.IdThongBao == id).ToList();
+        if (tk.Any())
+        {
+            _context.TbThongBaos.RemoveRange(tk);
+        }
+
+        _context.TbThongBaos.Remove(nv);
+        _context.SaveChanges();
+        return RedirectToAction(nameof(Index));
+    }
 
 }
