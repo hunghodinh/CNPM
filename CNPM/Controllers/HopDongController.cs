@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using CNPM.Utilities;
 
 namespace CNPM.Controllers
 {
@@ -15,7 +16,9 @@ namespace CNPM.Controllers
 		}
 		public IActionResult Index()
 		{
-			var hopDongVMs = _context.TbHopDongs
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
+            var hopDongVMs = _context.TbHopDongs
 				.Include(hd => hd.MaSinhVienNavigation)
 				.Include(hd => hd.MaSinhVienNavigation)
 				.Select(hd => new HopDongViewModel

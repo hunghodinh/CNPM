@@ -1,6 +1,7 @@
 ﻿using CNPM.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using CNPM.Utilities;
 
 namespace CNPM.Controllers
 {
@@ -15,7 +16,9 @@ namespace CNPM.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
+            return View();
 		}
 
 		public IActionResult Privacy()

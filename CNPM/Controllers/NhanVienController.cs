@@ -1,5 +1,6 @@
 ﻿using CNPM.Models;
 using Microsoft.AspNetCore.Mvc;
+using CNPM.Utilities;
 
 namespace CNPM.Controllers
 {
@@ -13,7 +14,9 @@ namespace CNPM.Controllers
 		}
 		public IActionResult Index(string TenNhanVien, string ChucVu)
 		{
-			var nhanViens = _context.TbNhanViens.AsQueryable();
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
+            var nhanViens = _context.TbNhanViens.AsQueryable();
 
 
 			if (!string.IsNullOrEmpty(TenNhanVien))

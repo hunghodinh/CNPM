@@ -1,5 +1,6 @@
 ﻿using CNPM.Models;
 using Microsoft.AspNetCore.Mvc;
+using CNPM.Utilities;
 
 namespace CNPM.Controllers
 {
@@ -13,6 +14,8 @@ namespace CNPM.Controllers
         }
         public IActionResult Index()
         {
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
             List<TbSinhVien> rooms = _context.TbSinhViens.ToList();
             return View(rooms);
         }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using CNPM.Utilities;
 
 namespace CNPM.Controllers
 {
@@ -15,7 +16,9 @@ namespace CNPM.Controllers
 		}
 		public IActionResult Index()
 		{
-			List<TbHoaDon> r = _context.TbHoaDons.ToList();
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
+            List<TbHoaDon> r = _context.TbHoaDons.ToList();
 			return View(r);
 		}
 

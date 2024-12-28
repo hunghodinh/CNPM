@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
 using CNPM.Models;
+using CNPM.Utilities;
 
 public class ThongBaoController : Controller
 {
@@ -18,6 +19,8 @@ public class ThongBaoController : Controller
     // Hiển thị danh sách thông báo
     public IActionResult Index()
     {
+        if (!Function.IsLogin())
+            return RedirectToAction("Index", "Login");
         var thongBaos = _context.TbThongBaos
             .Include(tb => tb.MaSinhVienNavigation) // Lấy thông tin sinh viên
             .ToList();

@@ -1,6 +1,7 @@
 ﻿using CNPM.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CNPM.Utilities;
 
 namespace CNPM.Controllers
 {
@@ -14,7 +15,9 @@ namespace CNPM.Controllers
 		}
 		public IActionResult Index()
 		{
-			List<TbPhong> rooms = _context.TbPhongs.ToList();
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
+            List<TbPhong> rooms = _context.TbPhongs.ToList();
 			return View(rooms);
 		}
         public async Task<IActionResult> ChiTiet(int maSoPhong)
