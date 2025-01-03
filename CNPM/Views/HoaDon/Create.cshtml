@@ -32,29 +32,22 @@
 									<option value="">-- Chọn Sinh Viên --</option>
 									@foreach (var sinhVien in ViewBag.SinhViens)
 									{
-										<option value="@sinhVien.IdHopDong">@sinhVien.TenSinhVien</option>
+										<option value="@sinhVien.Value">@sinhVien.Text</option>
 									}
 								</select>
 							</div>
 						</div>
+						<!-- Chọn Dịch Vụ -->
 						<div class="col-md-4">
 							<div class="form-group">
-								<label asp-for="IdDichVu">Tên dịch vụ</label>
-								<select class="form-control" asp-for="IdDichVu">
-									<option value="DV01">Không sử dụng</option>
-									<option value="DV02">Rác thải</option>
-									<option value="DV03">Gửi xe</option>
+								<label asp-for="IdDichVu">Dịch vụ</label>
+								<select asp-for="IdDichVu" class="form-control" asp-items="ViewBag.DichVuList">
+									<option value="">-- Chọn Dịch Vụ --</option>
+									@foreach (var dichVu in ViewBag.DichVus)
+									{
+										<option value="@dichVu.Value">@dichVu.Text</option>
+									}
 								</select>
-								<span asp-validation-for="IdDichVu" class="alert-danger"></span>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label asp-for="NgayDong">Ngày đóng</label>
-								<div class="cal-icon">
-									<input type="datetime" class="form-control datetimepicker" asp-for="NgayDong">
-								</div>
-								<span asp-validation-for="NgayDong" class="alert-danger"></span>
 							</div>
 						</div>
 						<div class="col-md-4">
@@ -98,4 +91,11 @@
 			</div>
 		</div>
 	</div>
+	@if (TempData["Message"] != null)
+	{
+		<div class="alert alert-warning">
+			@TempData["Message"]
+		</div>
+	}
+
 </div>

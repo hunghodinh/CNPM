@@ -42,7 +42,13 @@ namespace CNPM.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult Create(TbPhong mn)
 		{
-			if (ModelState.IsValid)
+            var check = _context.TbPhongs.Where(m => m.MaSoPhong == mn.MaSoPhong).FirstOrDefault();
+            if (check != null||check ==null)
+            {
+                TempData["Message"] = "Mã phòng đã tồn tại hoặc để trống";
+                return RedirectToAction("Create");
+            }
+            if (ModelState.IsValid)
 			{
 				_context.TbPhongs.Add(mn);
 				_context.SaveChanges();

@@ -10,7 +10,7 @@ builder.Services.AddDbContext<CnpmContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-// Add services to the container.
+// Thêm d?ch v? vào vùng ch?a.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

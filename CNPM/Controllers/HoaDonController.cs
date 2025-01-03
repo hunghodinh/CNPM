@@ -14,72 +14,95 @@ namespace CNPM.Controllers
 		{
 			_context = context;
 		}
-		public IActionResult Index()
-		{
+        public IActionResult Index(DateTime? NgayDong)
+        {
             if (!Function.IsLogin())
                 return RedirectToAction("Index", "Login");
-            List<TbHoaDon> r = _context.TbHoaDons.ToList();
-			return View(r);
-		}
+
+            var hoaDons = _context.TbHoaDons.AsQueryable();
+
+            if (NgayDong.HasValue)
+            {
+                hoaDons = hoaDons.Where(hd => hd.NgayDong.HasValue && hd.NgayDong.Value.Date == NgayDong.Value.Date);
+            }
+
+            // Lưu giá trị NgayDong vào ViewBag để sử dụng trong view
+            ViewBag.NgayDong = NgayDong?.ToString("dd-MM-yyyy");
+
+            return View(hoaDons.ToList());
+        }
+
+
 
         public IActionResult Create()
         {
-            // Lấy danh sách sinh viên và hợp đồng chưa có trong bảng TbHoaDon
+            // Lọc danh sách hợp đồng chưa có hóa đơn
             var sinhViens = _context.TbHopDongs
-                                    .Where(h => !_context.TbHoaDons.Any(hd => hd.IdHopDong == h.IdHopDong))
-                                    .Join(_context.TbSinhViens,
-                                          h => h.MaSinhVien,
-                                          s => s.MaSinhVien,
-                                          (h, s) => new
-                                          {
-                                              MaSinhVien = s.MaSinhVien,
-                                              TenSinhVien = s.TenSinhVien,
-                                              IdHopDong = h.IdHopDong
-                                          })
-                                    .ToList();
+                .Include(hd => hd.MaSinhVienNavigation)
+                .Where(hd => !_context.TbHoaDons.Any(hdExist => hdExist.IdHopDong == hd.IdHopDong)) // Lọc hợp đồng chưa có hóa đơn
+                .Select(hd => new SelectListItem
+                {
+                    Value = hd.IdHopDong,
+                    Text = hd.MaSinhVienNavigation.TenSinhVien
+                })
+                .ToList();
+
+            // Lấy danh sách TenDichVu từ bảng TbDichVu
+            var dichVus = _context.TbDichVus
+                .Select(dv => new SelectListItem
+                {
+                    Value = dv.IdDichVu,
+                    Text = dv.TenDichVu
+                })
+                .ToList();
 
             ViewBag.SinhViens = sinhViens;
+            ViewBag.DichVus = dichVus;
+
             return View();
         }
 
+
+
+
+
         [HttpPost]
-		public IActionResult Create(string idHoaDon, string idHopDong, string idDichVu, DateTime? ngayDong, string? nguoiDong, decimal? tienPhong, int? trangThai, string? ghiChu)
-		{
-			// Lấy thông tin hợp đồng và dịch vụ
-			var hopDong = _context.TbHopDongs.FirstOrDefault(h => h.IdHopDong == idHopDong);
-			var dichVu = _context.TbDichVus.FirstOrDefault(d => d.IdDichVu == idDichVu);
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(TbHoaDon hoaDon)
+        {
+            if (hoaDon == null)
+                return NotFound();
 
-			// Kiểm tra tồn tại của hợp đồng và dịch vụ
-			if (hopDong == null || dichVu == null)
-			{
-				return BadRequest("Hợp đồng hoặc dịch vụ không tồn tại.");
-			}
+            // Kiểm tra nếu IdHoaDon đã tồn tại
+            var existingHoaDon = _context.TbHoaDons.FirstOrDefault(hd => hd.IdHoaDon == hoaDon.IdHoaDon);
+            if (existingHoaDon != null)
+            {
+                TempData["Message"] = $"Id hóa đơn '{hoaDon.IdHoaDon}' đã tồn tại, vui lòng nhập lại!";
+                return RedirectToAction("Create");
+            }
 
-			// Tính tổng tiền từ tiền phòng và đơn giá dịch vụ
-			decimal tongTien = (tienPhong ?? 0) + (dichVu.DonGia ?? 0);
+            // Kiểm tra dịch vụ có tồn tại không
+            var dichVu = _context.TbDichVus.FirstOrDefault(dv => dv.IdDichVu == hoaDon.IdDichVu);
+            if (dichVu == null)
+            {
+                TempData["Message"] = "Dịch vụ không hợp lệ!";
+                return RedirectToAction("Create");
+            }
 
-			// Tạo mới hóa đơn
-			TbHoaDon hoaDon = new TbHoaDon
-			{
-				IdHoaDon = idHoaDon,
-				IdHopDong = idHopDong,
-				IdDichVu = idDichVu,
-				NgayDong = ngayDong,
-				NguoiDong = nguoiDong,
-				TienPhong = tienPhong,
-				TongTien = tongTien,
-				TrangThai = trangThai,
-				GhiChu = ghiChu
-			};
+            // Tính toán tổng tiền
+            hoaDon.TongTien = hoaDon.TienPhong + dichVu.DonGia;
 
-			// Thêm hóa đơn vào database
-			_context.TbHoaDons.Add(hoaDon);
-			_context.SaveChanges();
-
+            // Lưu vào cơ sở dữ liệu
+            hoaDon.NgayDong = DateTime.Now;
+            _context.TbHoaDons.Add(hoaDon);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-		public IActionResult Delete(String? id)
+
+
+
+        public IActionResult Delete(String? id)
 		{
 			if (id == null)
 			{
@@ -151,7 +174,24 @@ namespace CNPM.Controllers
 			return RedirectToAction("Index");
 		}
 
+        public IActionResult InHD(string? idHd)
+        {
+            if (string.IsNullOrEmpty(idHd))
+            {
+                return BadRequest("Mã hóa đơn không hợp lệ.");
+            }
 
+            var invoice = _context.TbHoaDons
+                         .Include(hd => hd.IdDichVuNavigation) // Load thông tin dịch vụ nếu có
+                         .FirstOrDefault(hd => hd.IdHoaDon == idHd);
 
-	}
+            if (invoice == null)
+            {
+                return NotFound($"Không tìm thấy hóa đơn với mã: {idHd}");
+            }
+
+            return View(invoice);
+        }
+
+    }
 }

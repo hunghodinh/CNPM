@@ -1,0 +1,50 @@
+﻿@model CNPM.Models.TbTaiKhoan
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title mt-5">Chỉnh sửa tài khoản</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <form method="post">
+                    <div class="row formtype">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="TenTk">Tên tài khoản</label>
+                                <input type="text" class="form-control mb-3" asp-for="TenTk" placeholder="">
+                                <span asp-validation-for="TenTk" class="alert-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MatKhau">Mật khẩu</label>
+                                <input type="password" class="form-control mb-3" asp-for="MatKhau" placeholder="Để trống nếu không muốn thay đổi">
+                                <span asp-validation-for="MatKhau" class="alert-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MaNhanVien">Tên nhân viên</label>
+                                <select class="form-control mb-3" asp-for="MaNhanVien" asp-items="ViewBag.NhanViens">
+                                    <option value="">-- Chọn nhân viên --</option>
+                                </select>
+                                <span asp-validation-for="MaNhanVien" class="alert-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary buttonedit">Lưu</button>
+                    <a asp-controller="TaiKhoan" asp-action="Index" class="btn btn-lg btn-warning p-2">Quay lại</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

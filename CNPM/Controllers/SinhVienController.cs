@@ -12,13 +12,26 @@ namespace CNPM.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(string? MaSinhVien)
         {
             if (!Function.IsLogin())
                 return RedirectToAction("Index", "Login");
-            List<TbSinhVien> rooms = _context.TbSinhViens.ToList();
-            return View(rooms);
+
+            // Lấy danh sách sinh viên
+            var sinhViens = _context.TbSinhViens.AsQueryable();
+
+            // Lọc theo MaSinhVien nếu có
+            if (!string.IsNullOrEmpty(MaSinhVien))
+            {
+                sinhViens = sinhViens.Where(sv => sv.MaSinhVien.Contains(MaSinhVien));
+            }
+
+            // Truyền giá trị tìm kiếm qua ViewBag để hiển thị lại trên giao diện
+            ViewBag.MaSinhVien = MaSinhVien;
+
+            return View(sinhViens.ToList());
         }
+
         public IActionResult Create()
         {
             var mn = _context.TbSinhViens.OrderBy(m => m.MaSinhVien).ToList();
@@ -30,16 +43,24 @@ namespace CNPM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TbSinhVien mn)
         {
+            var check = _context.TbSinhViens.Where(m => m.MaSinhVien == mn.MaSinhVien).FirstOrDefault();
+            if (check != null)
+            {
+                TempData["Message"] = "Mã sinh viên đã tồn tại";
+                return RedirectToAction("Create");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.TbSinhViens.Add(mn);
                 _context.SaveChanges();
-
                 return RedirectToAction("Index");
             }
 
+            // Nếu có lỗi, trả lại View kèm dữ liệu
             return View(mn);
         }
+
         public IActionResult Delete(String? id)
         {
             if (id == null)

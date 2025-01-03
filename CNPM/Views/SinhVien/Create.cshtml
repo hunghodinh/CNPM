@@ -20,10 +20,15 @@
 					<div class="row formtype">
 						<div class="col-md-4">
 							<div class="form-group">
-								<label asp-for="MaSinhVien">Tên sinh viên</label>
+								<label asp-for="MaSinhVien">Mã sinh viên</label>
 								<input type="text" class="form-control mb-3" asp-for="MaSinhVien" placeholder="SV_ _ _ _">
 								<span asp-validation-for="MaSinhVien" class="alert-danger"></span>
+								
 							</div>
+							@if (TempData["Message"] != null)
+							{
+								<div class="alert alert-danger">@TempData["Message"]</div>
+							}
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">

@@ -1,5 +1,5 @@
 ﻿@using CNPM.Models;
-@model List<TbSinhVien>
+@model List<TbTaiKhoan>
 
 <div class="page-wrapper">
 	<div class="content container-fluid">
@@ -7,20 +7,9 @@
 			<div class="row align-items-center">
 				<div class="col">
 					<div class="mt-5">
-						<h4 class="card-title float-left mt-2">Sinh Viên</h4> <a href="/SinhVien/Create" class="btn btn-primary float-right veiwbutton">Thêm Sinh Viên</a>
+						<h4 class="card-title float-left mt-2">Tài khoản nhân viên</h4> <a href="/TaiKhoan/Create" class="btn btn-primary float-right veiwbutton">Thêm tài khoản</a>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<form asp-action="Index" method="get" class="form-inline mb-3">
-					<div class="form-group">
-						<label for="MaSinhVien" class="mr-2">Mã Sinh Viên:</label>
-						<input type="text" id="MaSinhVien" name="MaSinhVien" class="form-control mr-2" value="@ViewBag.MaSinhVien" />
-					</div>
-					<button type="submit" class="btn btn-primary">Tìm kiếm</button>
-				</form>
 			</div>
 		</div>
 		<div class="row">
@@ -32,14 +21,9 @@
 								<thead>
 									<tr>
 										<th>STT</th>
-										<th>Mã sinh viên</th>
-										<th>Tên sinh viên</th>
-										<th>Căn cước công dân</th>
-										<th>Số điện thoại</th>
-										<th>Email</th>
-										<th>Ngày sinh</th>
-										<th>Địa chỉ</th>
-										<th>Giới tính</th>
+										<th>Tên tài khoản</th>
+										<th>Mật khẩu</th>
+										<th>Nhân viên</th>
 										<th>Thao tác</th>
 									</tr>
 								</thead>
@@ -51,19 +35,15 @@
 									{
 										<tr>
 											<td>@stt</td>
-											<td>@sv.MaSinhVien</td>
-											<td>@sv.TenSinhVien</td>
-											<td>@sv.Cccd</td>
-											<td>@sv.SoDt</td>
-											<td>@sv.Email</td>
-											<td>@((sv.NgaySinh != null) ? ((DateTime)sv.NgaySinh).ToString("dd/MM/yyyy") : "")</td>
-											<td>@sv.DiaChi</td>
-											<td>@(sv.GioiTinh == true ? "Nam" : "Nữ")</td>
+											<td>@sv.TenTk</td>
+											<td>@sv.MatKhau</td>
+											<td>@sv.MaNhanVienNavigation.TenNhanVien</td>
+
 											<td class="text-right">
-												<a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@sv.MaSinhVien">
+												<a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@sv.IdTaiKhoan">
 													<i class="fas fa-pencil-alt m-r-5"></i> Sửa
 												</a>
-												<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal-@sv.MaSinhVien">
+												<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal-@sv.IdTaiKhoan">
 													<i class="fas fa-trash-alt m-r-5"></i> Xóa
 												</a>
 											</td>
@@ -80,7 +60,7 @@
 	</div>
 	@foreach (var kh in Model)
 	{
-		<div class="modal fade delete-modal" id="deleteModal-@kh.MaSinhVien" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+		<div class="modal fade delete-modal" id="deleteModal-@kh.IdTaiKhoan" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-body text-center">
@@ -88,7 +68,7 @@
 						<h3 class="delete_class">Bạn chắc chắn muốn xóa không?</h3>
 						<div class="m-t-20 d-flex justify-content-between">
 							<a href="#" class="btn btn-white me-1" data-dismiss="modal">Close</a> <!-- Sử dụng me-1 -->
-							<form asp-action="Delete" asp-route-id="@kh.MaSinhVien" class="mb-0">
+							<form asp-action="Delete" asp-route-id="@kh.IdTaiKhoan" class="mb-0">
 								<button type="submit" class="btn btn-danger">Xóa</button>
 							</form>
 						</div>
